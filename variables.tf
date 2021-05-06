@@ -1,83 +1,110 @@
-variable "name" {}
-variable "environment" {}
+variable "name" {
+  description = "A name for the service."
+}
+variable "environment" {
+  description = "The environment name. E.g dev, prod, stage"
+}
 variable "task_definition" {
-  default = null
+  default     = null
+  description = "The ARN of the task definition if you don't want to create a task definition through this module."
 }
 variable "desired_count" {
-  default = 0
+  default     = 0
+  description = "The desired running tasks count."
 }
 variable "launch_type" {
-  default = "EC2"
+  default     = "EC2"
+  description = "Launch type on which to run your service. The valid values are EC2 and FARGATE. Defaults to EC2."
 }
 variable "platform_version" {
-  default = null
+  default     = null
+  description = "Platform version on which to run your service. Only applicable for launch_type set to FARGATE. Defaults to LATEST."
 }
 variable "scheduling_strategy" {
-  default = "REPLICA"
+  default     = "REPLICA"
+  description = "Scheduling strategy to use for the service. The valid values are REPLICA and DAEMON. Defaults to REPLICA."
 }
 variable "cluster" {
-  default = null
+  default     = null
+  description = "ARN of an ECS cluster."
 }
 variable "iam_role" {
-  default = null
+  default     = null
+  description = "ARN of the IAM role that allows Amazon ECS to make calls to your load balancer on your behalf. Only if the task definition does not use awsvpc mode."
 }
 variable "deployment_maximum_percent" {
-  default = null
+  default     = null
+  description = "Upper limit (as a percentage of the service's desiredCount) of the number of running tasks that can be running in a service during a deployment."
 }
 variable "deployment_minimum_healthy_percent" {
-  default = null
+  default     = null
+  description = "Lower limit (as a percentage of the service's desiredCount) of the number of running tasks that must remain running and healthy in a service during a deployment."
 }
 variable "enable_ecs_managed_tags" {
-  default = null
+  default     = null
+  description = "Specifies whether to enable Amazon ECS managed tags for the tasks within the service."
 }
 variable "propagate_tags" {
-  default = null
+  default     = null
+  description = "Specifies whether to propagate the tags from the task definition or the service to the tasks. The valid values are SERVICE and TASK_DEFINITION."
 }
 variable "health_check_grace_period_seconds" {
-  default = null
+  default     = null
+  description = "Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 2147483647. Only valid for services configured to use load balancers."
 }
 variable "tags" {
-  type = map
+  type        = map(any)
+  description = "Key-value map of resource tags."
 }
 variable "deployment_controller" {
-  default = []
-  type    = list(any)
+  default     = []
+  type        = list(any)
+  description = "Configuration block for deployment controller configuration."
 }
 variable "load_balancer" {
-  default = []
-  type    = list(any)
+  default     = []
+  type        = list(any)
+  description = "Configuration block for load balancers."
 }
 variable "ordered_placement_strategy" {
-  default = []
-  type    = list(any)
+  default     = []
+  type        = list(any)
+  description = "Service level strategy rules that are taken into consideration during task placement. List from top to bottom in order of precedence. Updates to this configuration will take effect next task deployment unless force_new_deployment is enabled."
 }
 variable "placement_constraints" {
-  default = []
-  type    = list(any)
+  default     = []
+  type        = list(any)
+  description = "Rules that are taken into consideration during task placement."
 }
 variable "network_configuration" {
-  default = []
-  type    = list(any)
+  default     = []
+  type        = list(any)
+  description = "Network configuration for the service. This parameter is required for task definitions that use the awsvpc network mode to receive their own Elastic Network Interface, and it is not supported for other network modes."
 }
 variable "service_registries" {
-  default = []
-  type    = list(any)
+  default     = []
+  type        = list(any)
+  description = "Service discovery registries for the service. The maximum number of service_registries blocks is 1."
 }
 
 variable "task_role_arn" {
-  default = null
+  default     = null
+  description = "ARN of IAM role that allows your Amazon ECS container task to make calls to other AWS services."
 }
 
 variable "cloudwatch_log_group" {
-  default = null
+  default     = null
+  description = "CloudWatch Log Group to send Firelends logs. Specify if enable_firelens is true."
 }
 
 variable "region" {
-  default = "us-east-1"
+  default     = "us-east-1"
+  description = "AWS Region."
 }
 
 variable "enable_firelens" {
-  default = false
+  default     = false
+  description = "Whether you want to enable firelens sidecar container logging option. It does not work with external task definition."
 }
 
 variable "container_name" {
@@ -103,7 +130,7 @@ variable "container_memory_reservation" {
 }
 
 variable "container_definition" {
-  type        = map
+  type        = map(any)
   description = "Container definition overrides which allows for extra keys or overriding existing keys."
   default     = {}
 }
@@ -262,7 +289,7 @@ variable "firelens_configuration" {
 }
 
 variable "mount_points" {
-  type = list
+  type = list(any)
 
   description = "Container mount points. This is a list of maps, where each map should contain a `containerPath` and `sourceVolume`. The `readOnly` key is optional."
   default     = []
@@ -357,26 +384,33 @@ variable "system_controls" {
 }
 
 variable "execution_role_arn" {
-  default = null
+  default     = null
+  description = "ARN of the task execution role that the Amazon ECS container agent and the Docker daemon can assume."
 }
 
 variable "capacity_provider_strategy" {
-  type    = list(any)
-  default = []
+  type        = list(any)
+  default     = []
+  description = "Capacity provider strategy to use for the service. Can be one or more."
 }
 
 variable "enable_app_autoscaling" {
-  default = false
+  default     = false
+  description = "Whether you want to enable application autoscaling."
 }
 variable "max_capacity" {
-  default = null
+  default     = null
+  description = "The max capacity of the scalable target (app autoscaling)."
 }
 variable "min_capacity" {
-  default = null
+  default     = null
+  description = "The min capacity of the scalable target (app autoscaling)."
 }
 variable "target_value" {
-  default = null
+  default     = null
+  description = "The target value for the metric (app autoscaling)."
 }
 variable "predefined_metric_type" {
-  default = null
+  default     = null
+  description = "A predefined metric (app autoscaling)."
 }

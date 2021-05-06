@@ -81,7 +81,7 @@ resource "aws_ecs_service" "this" {
 }
 
 resource "aws_appautoscaling_target" "this" {
-  count = var.enable_app_autoscaling ? 1 : 0
+  count              = var.enable_app_autoscaling ? 1 : 0
   max_capacity       = var.max_capacity
   min_capacity       = var.min_capacity
   resource_id        = "service/${var.environment}-cluster/${aws_ecs_service.this.name}"
@@ -90,7 +90,7 @@ resource "aws_appautoscaling_target" "this" {
 }
 
 resource "aws_appautoscaling_policy" "ecs_policy" {
-  count = var.enable_app_autoscaling ? 1 : 0
+  count              = var.enable_app_autoscaling ? 1 : 0
   name               = "${var.environment}-scaling-policy"
   policy_type        = "TargetTrackingScaling"
   resource_id        = aws_appautoscaling_target.this[0].resource_id
