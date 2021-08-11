@@ -2,7 +2,7 @@ resource "aws_ecs_service" "this" {
   name                               = "${var.environment}-${var.name}-service"
   task_definition                    = var.task_definition == null ? aws_ecs_task_definition.this[0].arn : var.task_definition
   desired_count                      = var.desired_count
-  launch_type                        = var.capacity_provider_strategy == [] ? var.launch_type : null
+  launch_type                        = var.enable_launch_type ? var.launch_type : null
   platform_version                   = var.platform_version
   scheduling_strategy                = var.scheduling_strategy
   cluster                            = var.cluster

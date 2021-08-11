@@ -414,3 +414,7 @@ variable "predefined_metric_type" {
   default     = null
   description = "A predefined metric (app autoscaling)."
 }
+variable "enable_launch_type" {
+  type    = bool
+  default = true
+}
